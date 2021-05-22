@@ -50,17 +50,26 @@ struct EmojiArtDocumentView: View {
                             return self.drop(providers: providers,at: location)
                         }
                     
-                    
+                    ForEach(self.document.emojis){emoji in
+                        Text(emoji.emoji)
+                            .font(self.font(for:emoji))
+                            .position(self.position(for:emoji,in:geometry.size))
+                    }
 
                 }
                 
             }
             
         }
-        
-        
-        
+          
     }
+    private func font(for emoji:EmojiArt.Emoji)->Font{
+        return Font.system(size: emoji.fontSize)
+    }
+    private func position(for emoji:EmojiArt.Emoji,in size:CGSize)->CGPoint{
+        CGPoint(x:emoji.location.x + size.width/2,y:emoji.location.y + size.height/2)
+    }
+    
     private func drop(providers:[NSItemProvider],at location:CGPoint)->Bool{
         
         var found = providers.loadFirstObject(ofType: URL.self){url in
